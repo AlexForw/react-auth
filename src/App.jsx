@@ -16,7 +16,7 @@ function App() {
         <div className="auth__block">
           <h2 className="auth__title">Register</h2>
           <input className="input auth__name" placeholder='Name..' />
-          <input className="input auth__phonenumber" placeholder='Password..' />
+          <input className="input auth__password" placeholder='Password..' />
           <button className='button auth__button'>Create user</button>
         </div>
       </div>
@@ -28,7 +28,7 @@ function App() {
         <div className="auth__block">
           <h2 className="auth__title">Login</h2>
           <input className="input auth__name" placeholder='Name..' />
-          <input className="input auth__phonenumber" placeholder='Password..' />
+          <input className="input auth__password" placeholder='Password..' />
           <button className='button auth__button'>Login</button>
         </div>
       </div>
