@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Home = () => {
+  const [date,setDate] = useState(Date())
+  console.log(date)
   return (
-    <div>Home</div>
+    <div>
+      {date}
+    </div>
   )
 }
 
