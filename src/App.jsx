@@ -7,7 +7,7 @@
 // import Home from "./pages/Home";
 import { useState } from 'react'
 import './App.css'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { auth } from './firebase-config'
 
 
@@ -16,7 +16,14 @@ function App() {
   const [registerPassword, setRegisterPassword] = useState('')
   const [loginEmail, setLoginEmail] = useState('')
   const [loginPassword, setLoginPassword] = useState('')
-  
+  const [user,setUser] = useState('')
+
+
+  onAuthStateChanged(auth, (currentUser) =>{
+    setUser(currentUser)
+  })
+
+
   const register = async () =>{
     try{
       const user = createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
@@ -25,8 +32,17 @@ function App() {
       console.log(error.message);
     }
   }
-  const login = async () =>{}
-  const logout = async () =>{}
+  const login = async () =>{
+    try{
+      const user = signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+      console.log(user);
+    }catch (error){
+      console.log(error.message);
+    }
+  }
+  const logout = async () =>{
+    await signOut(auth)
+  }
 
   return (
     <div className="container">
@@ -39,15 +55,15 @@ function App() {
         </div>
       </div>
       <div className='auth__signout'>
-        <h2>User Logged in</h2>
-        <button className='button'>Sign out</button>
+        <h2>User Logged in: {user?.email} </h2>
+        <button className='button' onClick={logout}>Sign out</button>
         </div>
       <div className="auth">
         <div className="auth__block">
           <h2 className="auth__title">Login</h2>
           <input className="input auth__email" placeholder='Email..' onChange={(event) => setLoginEmail(event.target.value)}/>
           <input className="input auth__password" placeholder='Password..' onChange={(event) => setLoginPassword(event.target.value)}/>
-          <button className='button auth__button'>Login</button>
+          <button className='button auth__button' onClick={login}>Login</button>
         </div>
       </div>
 
