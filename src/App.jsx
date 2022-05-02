@@ -1,10 +1,3 @@
-// import { useEffect, useState } from "react";
-// import {
-//   BrowserRouter,
-//   Routes,
-//   Route,
-// } from "react-router-dom";
-// import Home from "./pages/Home";
 import { useState } from 'react'
 import './App.css'
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
@@ -16,17 +9,19 @@ function App() {
   const [registerPassword, setRegisterPassword] = useState('')
   const [loginEmail, setLoginEmail] = useState('')
   const [loginPassword, setLoginPassword] = useState('')
-  const [user,setUser] = useState('')
+  const [userName, setUserName] = useState({})
 
 
   onAuthStateChanged(auth, (currentUser) =>{
-    setUser(currentUser)
+    if (currentUser) {
+      setUserName(currentUser)
+    }
   })
 
 
   const register = async () =>{
     try{
-      const user = createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
+      const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
       console.log(user);
     }catch (error){
       console.log(error.message);
@@ -34,7 +29,7 @@ function App() {
   }
   const login = async () =>{
     try{
-      const user = signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+      const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
       console.log(user);
     }catch (error){
       console.log(error.message);
@@ -42,6 +37,7 @@ function App() {
   }
   const logout = async () =>{
     await signOut(auth)
+    setUserName({})
   }
 
   return (
@@ -55,7 +51,7 @@ function App() {
         </div>
       </div>
       <div className='auth__signout'>
-        <h2>User Logged in: {user?.email} </h2>
+        <h2>User Logged in: {userName?.email} </h2>
         <button className='button' onClick={logout}>Sign out</button>
         </div>
       <div className="auth">
